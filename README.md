@@ -1,2 +1,2 @@
-# C-hashing-library-through-jni
-C hashing library through java native interface layer.
+# C-hashing-library
+C hashing library.
