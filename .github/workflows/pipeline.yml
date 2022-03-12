@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install cmake
-        run: apt-get -y install cmake
+        run: sudo apt-get -y install cmake
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Build static library
@@ -23,7 +23,7 @@ jobs:
     needs: build
     steps:
       - name: Install cmake
-        run: apt-get -y install cmake
+        run: sudo apt-get -y install cmake
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Run tests
