@@ -27,8 +27,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Run tests
-        run: mkdir build && cd build && cmake .. -DTARGET_GROUP=test && make && cd test && ctest
-      - name: Store test raport
+        run: mkdir build && cd build && cmake .. -DTARGET_GROUP=test && make && cd test && ctest -VV
+      - name: Store test report
         uses: actions/upload-artifact@v3
         with:
           name: test-report

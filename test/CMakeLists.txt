@@ -7,4 +7,4 @@ target_link_libraries(run_tests
     unity
 )
 
-add_test(NAME test_1 COMMAND $<TARGET_FILE:run_tests>)
+add_test(NAME test_suite COMMAND $<TARGET_FILE:run_tests>)

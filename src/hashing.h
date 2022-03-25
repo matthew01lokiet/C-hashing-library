@@ -1,7 +1,8 @@
+#include <stdint.h>
 #pragma once
 
 struct hashing {
-    const char* (*sha_224)(const char*);
+    uint32_t* (*sha_224)(uint8_t*,uint64_t);
     const char* (*sha_256)(const char*);
     const char* (*sha_0)(const char*);
     const char* (*sha_1)(const char*);
