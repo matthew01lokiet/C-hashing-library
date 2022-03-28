@@ -27,6 +27,22 @@ void test_circ_right_32bit_48(){
     TEST_ASSERT_EQUAL_HEX32(0x00ff0000, circ_right_32bit(0x000000ff,48));
 }
 
+void test_circ_left_32bit_8(){
+    TEST_ASSERT_EQUAL_HEX32(0x000000ff, circ_left_32bit(0xff000000,8));
+}
+
+void test_circ_left_32bit_zero(){
+    TEST_ASSERT_EQUAL_HEX32(0xff000000, circ_left_32bit(0xff000000,0));
+}
+
+void test_circ_left_32bit_full(){
+    TEST_ASSERT_EQUAL_HEX32(0xff000000, circ_left_32bit(0xff000000,32));
+}
+
+void test_circ_left_32bit_48(){
+    TEST_ASSERT_EQUAL_HEX32(0x0000ff00, circ_left_32bit(0xff000000,48));
+}
+
 void test_sha_224_null_value(){
     TEST_ASSERT_NULL(Hashing.sha_224(NULL,0));
 }
@@ -267,6 +283,119 @@ void test_sha_256_1600_bit_string(){
     free(actual);
 }
 
+void test_sha_1_null_value(){
+    TEST_ASSERT_NULL(Hashing.sha_1(NULL,0));
+}
+
+void test_sha_1_empty_string(){
+
+    uint8_t test_value[] = {};
+    uint32_t expected[] = {
+            0xda39a3ee, 0x5e6b4b0d, 0x3255bfef, 0x95601890, 0xafd80709
+    };
+    uint32_t* actual = sha_1(test_value,0);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,5);
+    free(actual);
+}
+
+void test_sha_1_test_string(){
+
+    uint8_t test_value[] = {'t', 'e', 's', 't'};
+    uint32_t expected[] = {
+            0xa94a8fe5, 0xccb19ba6, 0x1c4c0873, 0xd391e987, 0x982fbbd3
+    };
+    uint32_t* actual = sha_1(test_value,4);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,5);
+    free(actual);
+}
+
+void test_sha_1_440_bit_string(){
+
+    const uint8_t msg_size = 55;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0xfec65bc0, 0xaeb97430, 0x8292ccef, 0x3f5e6fde, 0x80643ea1
+    };
+    uint32_t* actual = sha_1(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,5);
+    free(actual);
+}
+
+void test_sha_1_448_bit_string(){
+
+    const uint8_t msg_size = 56;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x4d96fbcf, 0xae99bd32, 0xb90a1da5, 0x90d19a23, 0xdf5d01a1
+    };
+    uint32_t* actual = sha_1(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,5);
+    free(actual);
+}
+
+void test_sha_1_504_bit_string(){
+
+    const uint8_t msg_size = 63;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0xceac6782, 0x8f80d1d6, 0x65c6ba56, 0xedc325b5, 0x9ec73ed2
+    };
+    uint32_t* actual = sha_1(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,5);
+    free(actual);
+}
+
+void test_sha_1_512_bit_string(){
+
+    const uint8_t msg_size = 64;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0xcb916cf8, 0x97cbc2e1, 0xad7661e8, 0x5066f19b, 0xa81cfb04
+    };
+    uint32_t* actual = sha_1(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,5);
+    free(actual);
+}
+
+void test_sha_1_1600_bit_string(){
+
+    const uint8_t msg_size = 200;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x14c7c303, 0x8cc7deda, 0x52a123c8, 0x14f2ab1f, 0x71b33b0d
+    };
+    uint32_t* actual = sha_1(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,5);
+    free(actual);
+}
+
 int main(){
 
     UNITY_BEGIN();
@@ -275,6 +404,11 @@ int main(){
     RUN_TEST(test_circ_right_32bit_zero);
     RUN_TEST(test_circ_right_32bit_full);
     RUN_TEST(test_circ_right_32bit_48);
+
+    RUN_TEST(test_circ_left_32bit_8);
+    RUN_TEST(test_circ_left_32bit_zero);
+    RUN_TEST(test_circ_left_32bit_full);
+    RUN_TEST(test_circ_left_32bit_48);
 
     RUN_TEST(test_sha_224_null_value);
     RUN_TEST(test_sha_224_empty_string);
@@ -293,6 +427,15 @@ int main(){
     RUN_TEST(test_sha_256_504_bit_string);
     RUN_TEST(test_sha_256_512_bit_string);
     RUN_TEST(test_sha_256_1600_bit_string);
+
+    RUN_TEST(test_sha_1_null_value);
+    RUN_TEST(test_sha_1_empty_string);
+    RUN_TEST(test_sha_1_test_string);
+    RUN_TEST(test_sha_1_440_bit_string);
+    RUN_TEST(test_sha_1_448_bit_string);
+    RUN_TEST(test_sha_1_504_bit_string);
+    RUN_TEST(test_sha_1_512_bit_string);
+    RUN_TEST(test_sha_1_1600_bit_string);
 
     return UNITY_END();
 }
