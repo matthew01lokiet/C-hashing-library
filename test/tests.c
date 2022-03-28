@@ -147,6 +147,126 @@ void test_sha_224_1600_bit_string(){
     free(actual);
 }
 
+void test_sha_256_null_value(){
+    TEST_ASSERT_NULL(Hashing.sha_256(NULL,0));
+}
+
+void test_sha_256_empty_string(){
+
+    uint8_t test_value[] = {};
+    uint32_t expected[] = {
+            0xe3b0c442, 0x98fc1c14, 0x9afbf4c8, 0x996fb924,
+            0x27ae41e4, 0x649b934c, 0xa495991b, 0x7852b855
+    };
+    uint32_t* actual = sha_256(test_value,0);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,8);
+    free(actual);
+}
+
+void test_sha_256_test_string(){
+
+    uint8_t test_value[] = {'t', 'e', 's', 't'};
+    uint32_t expected[] = {
+            0x9f86d081, 0x884c7d65, 0x9a2feaa0, 0xc55ad015,
+            0xa3bf4f1b, 0x2b0b822c, 0xd15d6c15, 0xb0f00a08
+    };
+    uint32_t* actual = sha_256(test_value,4);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,8);
+    free(actual);
+}
+
+void test_sha_256_440_bit_string(){
+
+    const uint8_t msg_size = 55;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x4c027930, 0x4db390e4, 0x03c91c03, 0x64fd561a,
+            0x2f52b087, 0x80a97d52, 0x12ec43f8, 0xd88f73f8
+    };
+    uint32_t* actual = sha_256(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,8);
+    free(actual);
+}
+
+void test_sha_256_448_bit_string(){
+
+    const uint8_t msg_size = 56;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x525ebaf7, 0x58a060b9, 0x0e520c6c, 0x07298df5,
+            0xece9aa6b, 0xcf1c0f00, 0x1772c5f2, 0x2db66bd7
+    };
+    uint32_t* actual = sha_256(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,8);
+    free(actual);
+}
+
+void test_sha_256_504_bit_string(){
+
+    const uint8_t msg_size = 63;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0xfe60147e, 0xcf5222f9, 0x15ca2c01, 0x25d3d5ad,
+            0x3af0a73d, 0x38b5a7b3, 0xf0c8f440, 0x2eade2f3
+    };
+    uint32_t* actual = sha_256(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,8);
+    free(actual);
+}
+
+void test_sha_256_512_bit_string(){
+
+    const uint8_t msg_size = 64;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x3a33722b, 0x9a250ca3, 0xc820f696, 0x045d29ed,
+            0x8767dccc, 0x275d1c2a, 0x3e7cc88e, 0x54bcbed1
+    };
+    uint32_t* actual = sha_256(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,8);
+    free(actual);
+}
+
+void test_sha_256_1600_bit_string(){
+
+    const uint8_t msg_size = 200;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x8cbeafc0, 0x5ce09a3e, 0xac73af9f, 0x501dfe20,
+            0xdc47081e, 0x87ab7ed0, 0x0a1437c8, 0xbac3f3b5
+    };
+    uint32_t* actual = sha_256(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,8);
+    free(actual);
+}
+
 int main(){
 
     UNITY_BEGIN();
@@ -164,6 +284,15 @@ int main(){
     RUN_TEST(test_sha_224_504_bit_string);
     RUN_TEST(test_sha_224_512_bit_string);
     RUN_TEST(test_sha_224_1600_bit_string);
+
+    RUN_TEST(test_sha_256_null_value);
+    RUN_TEST(test_sha_256_empty_string);
+    RUN_TEST(test_sha_256_test_string);
+    RUN_TEST(test_sha_256_440_bit_string);
+    RUN_TEST(test_sha_256_448_bit_string);
+    RUN_TEST(test_sha_256_504_bit_string);
+    RUN_TEST(test_sha_256_512_bit_string);
+    RUN_TEST(test_sha_256_1600_bit_string);
 
     return UNITY_END();
 }
