@@ -269,14 +269,6 @@ uint32_t* sha_256(uint8_t* msg,uint64_t msg_size){
     return h;
 }
 
-const char* sha_0(const char* text){
-    
-    if(!text){
-        return text;
-    }
-    return "stub";
-}
-
 #define SHUFFLE_REGISTERS reg_e = reg_d; \
                           reg_d = reg_c; \
                           reg_c = circ_left_32bit(reg_b, 30); \
@@ -368,6 +360,116 @@ uint32_t* sha_1(uint8_t* msg,uint64_t msg_size){
 
             temp = circ_left_32bit(reg_a,5) + ((reg_b & reg_c)|(reg_b & reg_d)|(reg_c & reg_d)) + reg_e + 0x8f1bbcdc
                     + w[j];
+            SHUFFLE_REGISTERS
+        }
+
+        for(int j = 60; j < 80; j++) {
+
+            temp = circ_left_32bit(reg_a,5) + (reg_b ^ reg_c ^ reg_d) + reg_e + 0xca62c1d6 + w[j];
+            SHUFFLE_REGISTERS
+        }
+
+        h[0] += reg_a;
+        h[1] += reg_b;
+        h[2] += reg_c;
+        h[3] += reg_d;
+        h[4] += reg_e;
+    }
+
+    for(int i = 0; i < numb_of_blocks; i++) {
+        free(word_blocks[i]);
+    }
+    free(word_blocks);
+
+    return h;
+}
+
+uint32_t* sha_0(uint8_t* msg,uint64_t msg_size){
+
+    if(!msg){
+        return NULL;
+    }
+    uint64_t numb_of_blocks = (msg_size*8)/512;
+    uint8_t padding_one = 0b10000000;
+
+    if((((msg_size * 8) + 1) % 512) > 448){
+        numb_of_blocks += 2;
+    } else {
+        numb_of_blocks++;
+    }
+
+    uint32_t** word_blocks = (uint32_t**)malloc(numb_of_blocks * sizeof(uint32_t*));
+    for(uint64_t i = 0; i < numb_of_blocks; i++){
+        word_blocks[i] = (uint32_t*)calloc(16,sizeof(uint32_t));
+    }
+
+    uint64_t current_block_n = 0;
+    uint8_t current_word_n = 0;
+    uint64_t message_byte_n = 0;
+    for(; current_block_n < numb_of_blocks; current_block_n++){
+
+        for(; current_word_n < 16; current_word_n++){
+
+            for(uint8_t k = 0; k < 4; k++, message_byte_n++){
+
+                if(message_byte_n >= msg_size){
+                    goto outside;
+                }
+                word_blocks[current_block_n][current_word_n] |=
+                        ((uint32_t)msg[message_byte_n] << (((message_byte_n%4)-3)*(-1))*8);
+            }
+        }
+        current_word_n = 0;
+    }
+
+    outside: word_blocks[current_block_n][current_word_n] |= ((uint32_t)padding_one << (((message_byte_n%4)-3)*(-1))*8);
+
+    word_blocks[numb_of_blocks-1][14] = (uint32_t)((msg_size*8) >> 32);
+    word_blocks[numb_of_blocks-1][15] = (uint32_t)(msg_size*8);
+
+    uint32_t* h = (uint32_t*)malloc(5 * sizeof(uint32_t));
+    h[0] = 0x67452301;
+    h[1] = 0xefcdab89;
+    h[2] = 0x98badcfe;
+    h[3] = 0x10325476;
+    h[4] = 0xc3d2e1f0;
+
+    uint32_t reg_a, reg_b, reg_c, reg_d, reg_e;
+    uint32_t w[80];
+    uint32_t temp;
+
+    for(int i = 1; i <= numb_of_blocks; i++){
+
+        for(int j = 0; j < 16; j++) {
+            w[j] = word_blocks[i-1][j];
+        }
+
+        for(int j = 16; j < 80; j++) {
+            w[j] = (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]);
+        }
+
+        reg_a = h[0];
+        reg_b = h[1];
+        reg_c = h[2];
+        reg_d = h[3];
+        reg_e = h[4];
+
+        for(int j = 0; j < 20; j++) {
+
+            temp = circ_left_32bit(reg_a,5) + ((reg_b & reg_c) | ((~reg_b) & reg_d)) + reg_e + 0x5a827999 + w[j];
+            SHUFFLE_REGISTERS
+        }
+
+        for(int j = 20; j < 40; j++) {
+
+            temp = circ_left_32bit(reg_a,5) + (reg_b ^ reg_c ^ reg_d) + reg_e + 0x6ed9eba1 + w[j];
+            SHUFFLE_REGISTERS
+        }
+
+        for(int j = 40; j < 60; j++) {
+
+            temp = circ_left_32bit(reg_a,5) + ((reg_b & reg_c)|(reg_b & reg_d)|(reg_c & reg_d)) + reg_e + 0x8f1bbcdc
+                   + w[j];
             SHUFFLE_REGISTERS
         }
 
