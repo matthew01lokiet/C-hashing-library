@@ -509,6 +509,119 @@ void test_sha_0_1600_bit_string(){
     free(actual);
 }
 
+void test_md_5_null_value(){
+    TEST_ASSERT_NULL(Hashing.md_5(NULL,0));
+}
+
+void test_md_5_empty_string(){
+
+    uint8_t test_value[] = {};
+    uint32_t expected[] = {
+            0xd41d8cd9, 0x8f00b204, 0xe9800998, 0xecf8427e
+    };
+    uint32_t* actual = md_5(test_value,0);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,4);
+    free(actual);
+}
+
+void test_md_5_test_string(){
+
+    uint8_t test_value[] = {'t', 'e', 's', 't'};
+    uint32_t expected[] = {
+            0x098f6bcd, 0x4621d373, 0xcade4e83, 0x2627b4f6
+    };
+    uint32_t* actual = md_5(test_value,4);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,4);
+    free(actual);
+}
+
+void test_md_5_440_bit_string(){
+
+    const uint8_t msg_size = 55;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x3f6e21c6, 0x2dc1e5ec, 0xca493452, 0xa99aa694
+    };
+    uint32_t* actual = md_5(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,4);
+    free(actual);
+}
+
+void test_md_5_448_bit_string(){
+
+    const uint8_t msg_size = 56;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0xc385e3b0, 0x7c1ffaaf, 0xe6d96e49, 0xdf63633e
+    };
+    uint32_t* actual = md_5(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,4);
+    free(actual);
+}
+
+void test_md_5_504_bit_string(){
+
+    const uint8_t msg_size = 63;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x6c8cd692, 0xe405e022, 0xf8b1a105, 0xf787c476
+    };
+    uint32_t* actual = md_5(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,4);
+    free(actual);
+}
+
+void test_md_5_512_bit_string(){
+
+    const uint8_t msg_size = 64;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x2560d0f5, 0xdc4fefaf, 0x2992aa05, 0x2d29404c
+    };
+    uint32_t* actual = md_5(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,4);
+    free(actual);
+}
+
+void test_md_5_1600_bit_string(){
+
+    const uint8_t msg_size = 200;
+
+    uint8_t test_value[msg_size];
+    for(int i = 0; i < msg_size; i++){
+        test_value[i] = 't';
+    }
+    uint32_t expected[] = {
+            0x89ca3202, 0x8ae3bf63, 0x76a6e123, 0xa9c9e41f
+    };
+    uint32_t* actual = md_5(test_value,msg_size);
+
+    TEST_ASSERT_EQUAL_HEX32_ARRAY(expected,actual,4);
+    free(actual);
+}
+
 int main(){
 
     UNITY_BEGIN();
@@ -558,6 +671,15 @@ int main(){
     RUN_TEST(test_sha_0_504_bit_string);
     RUN_TEST(test_sha_0_512_bit_string);
     RUN_TEST(test_sha_0_1600_bit_string);
+
+    RUN_TEST(test_md_5_null_value);
+    RUN_TEST(test_md_5_empty_string);
+    RUN_TEST(test_md_5_test_string);
+    RUN_TEST(test_md_5_440_bit_string);
+    RUN_TEST(test_md_5_448_bit_string);
+    RUN_TEST(test_md_5_504_bit_string);
+    RUN_TEST(test_md_5_512_bit_string);
+    RUN_TEST(test_md_5_1600_bit_string);
 
     return UNITY_END();
 }
