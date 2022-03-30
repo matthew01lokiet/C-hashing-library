@@ -7,7 +7,7 @@ struct hashing {
     uint32_t* (*sha_1)(uint8_t*,uint64_t);
     uint32_t* (*sha_0)(uint8_t*,uint64_t);
     uint32_t* (*md_5)(uint8_t*,uint64_t);
-    const char* (*md_4)(const char*);
+    uint32_t* (*md_4)(uint8_t*,uint64_t);
     const char* (*rot_13)(const char*);
 };
 
