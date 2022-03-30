@@ -1,15 +1,8 @@
 #include <unity.h>
 #include "hashing.c"
 
-void setUp()
-{
-    //Method required. 
-}
-
-void tearDown()
-{
-    //Method required. 
-}
+void setUp();
+void tearDown();
 
 void test_circ_right_32bit_8(){
     TEST_ASSERT_EQUAL_HEX32(0xff000000, circ_right_32bit(0x000000ff,8));
@@ -735,6 +728,50 @@ void test_md_4_1600_bit_string(){
     free(actual);
 }
 
+void test_rot_13_null_string(){
+    TEST_ASSERT_NULL(Hashing.rot_13(NULL,0));
+}
+
+void test_rot_13_invalid_string(){
+
+    uint8_t test[] = {'0','2','['};
+    TEST_ASSERT_NULL(Hashing.rot_13(test,3));
+}
+
+void test_rot_13_test_string(){
+
+    uint8_t test[] = {'t','e','s','t'};
+    uint8_t expected[] = {'g','r','f','g'};
+    uint8_t* actual = rot_13(test,4);
+
+    TEST_ASSERT_EQUAL_INT8_ARRAY(expected,actual,4);
+    free(actual);
+}
+
+void test_rot_13_whole_alphabet(){
+
+    uint8_t test[] = {
+            'A','a','B','b','C','c','D','d','E','e',
+            'F','f','G','g','H','h','I','i','J','j',
+            'K','k','L','l','M','m','N','n','O','o',
+            'P','p','Q','q','R','r','S','s','T','t',
+            'U','u','V','v','W','w','X','x','Y','y',
+            'Z','z'
+    };
+    uint8_t expected[] = {
+            'N','n','O','o','P','p','Q','q','R','r',
+            'S','s','T','t','U','u','V','v','W','w',
+            'X','x','Y','y','Z','z','A','a','B','b',
+            'C','c','D','d','E','e','F','f','G','g',
+            'H','h','I','i','J','j','K','k','L','l',
+            'M','m'
+    };
+    uint8_t* actual = rot_13(test,52);
+
+    TEST_ASSERT_EQUAL_INT8_ARRAY(expected,actual,52);
+    free(actual);
+}
+
 int main(){
 
     UNITY_BEGIN();
@@ -803,5 +840,18 @@ int main(){
     RUN_TEST(test_md_4_512_bit_string);
     RUN_TEST(test_md_4_1600_bit_string);
 
+    RUN_TEST(test_rot_13_null_string);
+    RUN_TEST(test_rot_13_invalid_string);
+    RUN_TEST(test_rot_13_test_string);
+    RUN_TEST(test_rot_13_whole_alphabet);
+
     return UNITY_END();
+}
+
+void setUp(){
+    //Method required.
+}
+
+void tearDown(){
+    //Method required.
 }
