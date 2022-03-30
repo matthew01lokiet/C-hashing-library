@@ -10,8 +10,7 @@ static inline uint32_t circ_left_32bit(uint32_t, uint8_t);
 /**
  * @brief These constants represent the first 32 bits of the 
  * fractional parts of the cube roots of the first sixty-four
- * prime numbers that are being used during sha_224 and 
- * sha_256 computation.
+ * prime numbers.
  */
 static const uint32_t consts_32_sha[] = {
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
@@ -837,12 +836,34 @@ uint32_t* md_4(uint8_t* msg,uint64_t msg_size){
     return h;
 }
 
-const char* rot_13(const char* text){
-    
-    if(!text){
-        return text;
+uint8_t* rot_13(uint8_t* msg, uint64_t msg_size){
+
+    if(!msg){
+        return NULL;
     }
-    return "stub";
+
+    uint8_t* rot_msg = malloc(msg_size * sizeof(msg[0]));
+
+    for(uint64_t i = 0; i < msg_size; i++){
+
+        if('a' <= msg[i] && msg[i] <= 'z'){
+
+            if((rot_msg[i] = msg[i] + 13) > 122){
+                rot_msg[i] = 96 + (rot_msg[i]-122);
+            }
+        } else if('A' <= msg[i] && msg[i] <= 'Z') {
+
+            if((rot_msg[i] = msg[i] + 13) > 90){
+                rot_msg[i] = 64 + (rot_msg[i]-90);
+            }
+        } else {
+
+            free(rot_msg);
+            return NULL;
+        }
+    }
+
+    return rot_msg;
 }
 
 // HELPER METHODS
