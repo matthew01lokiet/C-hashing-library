@@ -1,32 +1,36 @@
 # C-hashing-library
 C hashing library providing 6 hashing functions and one bonus:
-- `SHA-224`
 - `SHA-256`
-- `SHA-0`
+- `SHA-224`
 - `SHA-1`
-- `MD-4`
+- `SHA-0`
 - `MD-5`
+- `MD-4`
 - `ROT-13`
 
 ## Usage Example
 ```c
 #include <stdio.h>
+#include <stdlib.h>
 #include "hashing.h"
 
-int main(int argc, const char *argv[]) {
+int main() {
 
-    if (argc != 2) {
-        printf("Provide exactly one argument!\n");
+    // SHA-224
+    uint8_t test_value[] = {'t', 'e', 's', 't'};
+    uint32_t* hash = Hashing.sha_224(test_value,4);
+
+    // If some problem, NULL value will get returned
+    if(hash == NULL){
         return 1;
     }
 
-    printf("SHA_224 Hash: %s\n", Hashing.sha_224(argv[1]));
-    printf("SHA_256 Hash: %s\n", Hashing.sha_256(argv[1]));
-    printf("SHA_0 Hash: %s\n", Hashing.sha_0(argv[1]));
-    printf("SHA_1 Hash: %s\n", Hashing.sha_1(argv[1]));
-    printf("MD_4 Hash: %s\n", Hashing.md_4(argv[1]));
-    printf("MD_5 Hash: %s\n", Hashing.md_5(argv[1]));
-    printf("ROT_13 Hash: %s\n", Hashing.rot_13(argv[1]));
+    for(int i = 0; i < 7; i++){
+        printf("%#010x ", hash[i]);
+    }
+    printf("\n");
+    // Remember about freeing memory allocated for the hash!
+    free(hash);
 
     return 0;
 }

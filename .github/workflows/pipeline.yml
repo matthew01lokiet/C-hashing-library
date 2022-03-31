@@ -5,10 +5,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Install cmake
-        run: sudo apt-get -y install cmake
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Install cmake
+        run: sudo apt-get -y install cmake
       - name: Build static library
         run: mkdir build && cd build && cmake .. -DTARGET_GROUP=build && make
       - name: Store build artifact
@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Install cmake
-        run: sudo apt-get -y install cmake
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Install cmake
+        run: sudo apt-get -y install cmake
       - name: Run tests
         run: mkdir build && cd build && cmake .. -DTARGET_GROUP=test && make && cd test && ctest -VV
       - name: Store test report
@@ -34,4 +34,19 @@ jobs:
           name: test-report
           path: build/test/Testing/Temporary/LastTest.log
           retention-days: 3
-    
+
+  doxygen-docs-generate:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install doxygen
+        run: sudo apt-get -y install doxygen
+      - name: Generate doxygen documentation
+        run: doxygen Doxyfile
+      - name: Store doxygen documentation
+        uses: actions/upload-artifact@v3
+        with:
+          name: doxygen-docs
+          path: html
