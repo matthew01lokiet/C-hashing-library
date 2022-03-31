@@ -44,9 +44,9 @@ jobs:
       - name: Install doxygen
         run: sudo apt-get -y install doxygen
       - name: Generate doxygen documentation
-        run: doxygen
+        run: doxygen Doxyfile
       - name: Store doxygen documentation
         uses: actions/upload-artifact@v3
         with:
           name: doxygen-docs
-          path: docs/html
+          path: html
