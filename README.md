@@ -1,4 +1,6 @@
 # C-hashing-library
+![Default Pipeline](https://github.com/matthew01lokiet/C-hashing-library/actions/workflows/pipeline.yml/badge.svg)
+
 C hashing library providing 6 hashing functions and one bonus:
 - `SHA-256`
 - `SHA-224`
