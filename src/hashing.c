@@ -55,6 +55,12 @@ static const uint32_t consts_32_md[] = {
         0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
 };
 
+/**
+ * Computes SHA-224 hash from provided message.
+ * @param msg message to hash as byte array
+ * @param msg_size number of message bytes
+ * @return hash consisting of 7 32-bit words
+ */
 uint32_t* sha_224(uint8_t* msg,uint64_t msg_size){
 
     if(!msg){
@@ -174,6 +180,12 @@ uint32_t* sha_224(uint8_t* msg,uint64_t msg_size){
     return h;
 }
 
+/**
+ * Computes SHA-256 hash from provided message.
+ * @param msg message to hash as byte array
+ * @param msg_size number of message bytes
+ * @return hash consisting of 8 32-bit words
+ */
 uint32_t* sha_256(uint8_t* msg,uint64_t msg_size){
 
     if(!msg){
@@ -298,6 +310,12 @@ uint32_t* sha_256(uint8_t* msg,uint64_t msg_size){
                               reg_c = circ_left_32bit(reg_b, 30); \
                               reg_b = reg_a; \
                               reg_a = temp;
+/**
+ * Computes SHA-1 hash from provided message.
+ * @param msg message to hash as byte array
+ * @param msg_size number of message bytes
+ * @return hash consisting of 5 32-bit words
+ */
 uint32_t* sha_1(uint8_t* msg,uint64_t msg_size){
 
     if(!msg){
@@ -408,6 +426,12 @@ uint32_t* sha_1(uint8_t* msg,uint64_t msg_size){
     return h;
 }
 
+/**
+ * Computes SHA-0 hash from provided message.
+ * @param msg message to hash as byte array
+ * @param msg_size number of message bytes
+ * @return hash consisting of 5 32-bit words
+ */
 uint32_t* sha_0(uint8_t* msg,uint64_t msg_size){
 
     if(!msg){
@@ -518,6 +542,12 @@ uint32_t* sha_0(uint8_t* msg,uint64_t msg_size){
     return h;
 }
 
+/**
+ * Computes MD-5 hash from provided message.
+ * @param msg message to hash as byte array
+ * @param msg_size number of message bytes
+ * @return hash consisting of 4 32-bit words
+ */
 uint32_t* md_5(uint8_t* msg,uint64_t msg_size){
 
     if(!msg){
@@ -688,6 +718,12 @@ uint32_t* md_5(uint8_t* msg,uint64_t msg_size){
     return h;
 }
 
+/**
+ * Computes MD-4 hash from provided message.
+ * @param msg message to hash as byte array
+ * @param msg_size number of message bytes
+ * @return hash consisting of 4 32-bit words
+ */
 uint32_t* md_4(uint8_t* msg,uint64_t msg_size){
 
     if(!msg){
@@ -836,6 +872,12 @@ uint32_t* md_4(uint8_t* msg,uint64_t msg_size){
     return h;
 }
 
+/**
+ * Returns new message after ROT-13 rotation.
+ * @param msg message to rotate as byte array (ascii)
+ * @param msg_size number of message bytes
+ * @return new message after rotation as byte array
+ */
 uint8_t* rot_13(uint8_t* msg, uint64_t msg_size){
 
     if(!msg){
