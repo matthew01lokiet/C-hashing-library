@@ -1,7 +1,7 @@
 # Hashing-library
 ![Default Pipeline](https://github.com/matthew01lokiet/Hashing-library/actions/workflows/pipeline.yml/badge.svg)
 
-Hashing library written in C, consists of 6 hashing functions and one bonus:
+Hashing library written in C; consists of 6 hashing functions and one bonus:
 - `SHA-256`
 - `SHA-224`
 - `SHA-1`
@@ -18,7 +18,7 @@ Hashing library written in C, consists of 6 hashing functions and one bonus:
 
 int main() {
 
-    // SHA-224
+    // hashed "test" value with SHA-224
     uint8_t test_value[] = {'t', 'e', 's', 't'};
     uint32_t* hash = Hashing.sha_224(test_value,4);
 
